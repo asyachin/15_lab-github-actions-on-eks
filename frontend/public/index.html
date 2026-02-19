@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Frontend ⇄ Backend Connectivity Check</title>
+    <link rel="stylesheet" href="/style.css" />
+</head>
+
+<body>
+    <main>
+        <h1>Frontend ⇄ Backend</h1>
+        <p class="muted">Path routing: <code>/</code> → frontend, <code>/api/*</code> → backend</p>
+
+        <section class="card">
+            <div class="row">
+                <button id="checkBtn">Check backend</button>
+                <span id="status" class="status">Checking…</span>
+            </div>
+            <pre id="output" class="output">(waiting for response)</pre>
+        </section>
+    </main>
+
+    <script src="/app.js"></script>
+</body>
+
+</html>
