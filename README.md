@@ -1,4 +1,4 @@
-# Frontend ⇄ Backend on EKS with API Gateway & CI/CD
+# Frontend - Backend on EKS with API Gateway & CI/CD
 
 Short summary of what this lab did, what’s in place, and the main decisions made.
 
