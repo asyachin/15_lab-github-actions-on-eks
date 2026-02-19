@@ -8,7 +8,7 @@ on:
 env:
   AWS_REGION:                ${{ secrets.AWS_REGION }}
   EKS_CLUSTER_NAME:          ${{ secrets.EKS_CLUSTER_NAME }}
-  NAMESPACE:                 ${{ secrets.NAMESPACE }}
+  K8S_NAMESPACE:                 ${{ secrets.NAMESPACE }}
   DOCKERHUB_USERNAME:        ${{ secrets.DOCKERHUB_USERNAME }}
   DOCKERHUB_TOKEN:           ${{ secrets.DOCKERHUB_TOKEN }}
   HOST:                      ${{ secrets.HOST }}
