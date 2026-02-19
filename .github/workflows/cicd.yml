@@ -8,7 +8,7 @@ on:
 env:
   AWS_REGION:                ${{ secrets.AWS_REGION }}
   EKS_CLUSTER_NAME:          ${{ secrets.EKS_CLUSTER_NAME }}
-  K8S_NAMESPACE:                 ${{ secrets.NAMESPACE }}
+  K8S_NAMESPACE:             ${{ secrets.K8S_NAMESPACE }}
   DOCKERHUB_USERNAME:        ${{ secrets.DOCKERHUB_USERNAME }}
   DOCKERHUB_TOKEN:           ${{ secrets.DOCKERHUB_TOKEN }}
   HOST:                      ${{ secrets.HOST }}
@@ -73,36 +73,36 @@ jobs:
         run: aws eks update-kubeconfig --region "$AWS_REGION" --name "$EKS_CLUSTER_NAME"
 
       - name: Ensure namespace exists
-        run: kubectl get ns "$NAMESPACE" || kubectl create ns "$NAMESPACE"
+        run: kubectl get ns "$K8S_NAMESPACE" || kubectl create ns "$K8S_NAMESPACE"
 
       - name: Apply manifests (services + routing)
         run: |
           # Services
-          kubectl apply -n "$NAMESPACE" -f k8/backend-service.yaml
-          kubectl apply -n "$NAMESPACE" -f k8/frontend-service.yaml
+          kubectl apply -n "$K8S_NAMESPACE" -f k8/backend-service.yaml
+          kubectl apply -n "$K8S_NAMESPACE" -f k8/frontend-service.yaml
 
           # Routing — apply whichever exists in your repo
           # Ingress path
-          [ -f k8/ingress-traefik.yaml ] && kubectl apply -n "$NAMESPACE" -f k8/ingress-traefik.yaml || true
+          [ -f k8/ingress-traefik.yaml ] && kubectl apply -n "$K8S_NAMESPACE" -f k8/ingress-traefik.yaml || true
           # Gateway API path
-          [ -f k8/gateway.yaml ]          && kubectl apply -n "$NAMESPACE" -f k8/gateway.yaml          || true
-          [ -f k8/httproute.yaml ]        && kubectl apply -n "$NAMESPACE" -f k8/httproute.yaml        || true
+          [ -f k8/gateway.yaml ]          && kubectl apply -n "$K8S_NAMESPACE" -f k8/gateway.yaml          || true
+          [ -f k8/httproute.yaml ]        && kubectl apply -n "$K8S_NAMESPACE" -f k8/httproute.yaml        || true
 
       - name: Apply deployments
         run: |
-          kubectl apply -n "$NAMESPACE" -f k8/backend-deployment.yaml
-          kubectl apply -n "$NAMESPACE" -f k8/frontend-deployment.yaml
+          kubectl apply -n "$K8S_NAMESPACE" -f k8/backend-deployment.yaml
+          kubectl apply -n "$K8S_NAMESPACE" -f k8/frontend-deployment.yaml
 
       - name: Set images to new tag
         run: |
           TAG=${{ github.sha }}
-          kubectl -n "$NAMESPACE" set image deployment/backend  backend="${DOCKERHUB_USERNAME}/lab-backend:${TAG}"
-          kubectl -n "$NAMESPACE" set image deployment/frontend frontend="${DOCKERHUB_USERNAME}/lab-frontend:${TAG}"
+          kubectl -n "$K8S_NAMESPACE" set image deployment/backend  backend="${DOCKERHUB_USERNAME}/lab-backend:${TAG}"
+          kubectl -n "$K8S_NAMESPACE" set image deployment/frontend frontend="${DOCKERHUB_USERNAME}/lab-frontend:${TAG}"
 
       - name: Wait for rollouts
         run: |
-          kubectl -n "$NAMESPACE" rollout status deploy/backend  --timeout=120s
-          kubectl -n "$NAMESPACE" rollout status deploy/frontend --timeout=120s
+          kubectl -n "$K8S_NAMESPACE" rollout status deploy/backend  --timeout=120s
+          kubectl -n "$K8S_NAMESPACE" rollout status deploy/frontend --timeout=120s
 
       - name: Smoke test
         run: |
