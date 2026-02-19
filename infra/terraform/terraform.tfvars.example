@@ -1,5 +1,0 @@
-aws_region    = "eu-central-1"
-instance_type = "t2.medium"
-instance_name = "your-instance-name"
-key_name      = "your-aws-key-name"
-# ami_id       = ""  # Optional: specify custom AMI ID, leave empty to use latest Ubuntu 24.04 LTS
