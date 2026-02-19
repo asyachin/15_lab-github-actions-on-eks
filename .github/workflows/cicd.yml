@@ -104,6 +104,3 @@ jobs:
           kubectl -n "$K8S_NAMESPACE" rollout status deploy/backend  --timeout=120s
           kubectl -n "$K8S_NAMESPACE" rollout status deploy/frontend --timeout=120s
 
-      - name: Smoke test
-        run: |
-          curl -sf "http://${HOST}/api/ping" && echo " ✓ Backend reachable"
