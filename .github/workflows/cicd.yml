@@ -2,7 +2,7 @@ name: CI/CD to EKS
 
 on:
   push:
-    branches: [main]
+    branches: [labs/dev]
   workflow_dispatch:
 
 env:
